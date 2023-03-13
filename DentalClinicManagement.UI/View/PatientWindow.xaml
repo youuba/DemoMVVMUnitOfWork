@@ -1,0 +1,148 @@
+﻿<Window
+    x:Class="DentalClinicManagement.UI.View.PatientWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:DentalClinicManagement.UI.View"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:rules="clr-namespace:DentalClinicManagement.UI.Helpers"
+    xmlns:vm="clr-namespace:DentalClinicManagement.UI.ViewModels"
+    Width="395"
+    Height="632"
+    Background="#FF410A66"
+    FontSize="15"
+    ResizeMode="NoResize"
+    WindowStartupLocation="CenterScreen"
+    WindowStyle="None"
+    mc:Ignorable="d">
+    <!--<Window.DataContext>
+        <vm:PatientViewModel />
+    </Window.DataContext>-->
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <StackPanel>
+            <Button
+                Width="40"
+                Height="40"
+                HorizontalAlignment="Right"
+                Background="{x:Null}"
+                BorderBrush="{x:Null}"
+                Command="{Binding CloseCommand}"
+                Style="{StaticResource MaterialDesignFloatingActionButton}">
+                <materialDesign:PackIcon Kind="Power" />
+            </Button>
+            <Label
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Center"
+                FontSize="20"
+                Foreground="White"
+                Style="{StaticResource MaterialDesignLabel}">
+                NEW PATIENT
+            </Label>
+            <Border
+                Height="432"
+                Margin="8,20"
+                Background="WhiteSmoke"
+                BorderBrush="#673AB7"
+                BorderThickness="4"
+                CornerRadius="5">
+                <StackPanel Margin="25">
+                    <Line Height="5" />
+                    <TextBox
+                        Name="FirstName"
+                        Margin="20,0"
+                        materialDesign:HintAssist.Foreground="RoyalBlue"
+                        materialDesign:HintAssist.Hint="First Name"
+                        materialDesign:TextFieldAssist.UnderlineBrush="RoyalBlue"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        Text="{Binding ModelRecord.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                    <TextBox
+                        Name="LastName"
+                        Margin="20"
+                        materialDesign:HintAssist.Foreground="RoyalBlue"
+                        materialDesign:HintAssist.Hint="Last Name"
+                        materialDesign:TextFieldAssist.UnderlineBrush="RoyalBlue"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        Text="{Binding ModelRecord.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                    <DatePicker
+                        Name="BirthDate"
+                        Width="280"
+                        Margin="20"
+                        materialDesign:HintAssist.Foreground="RoyalBlue"
+                        materialDesign:HintAssist.Hint="BirthDate"
+                        materialDesign:TextFieldAssist.UnderlineBrush="RoyalBlue"
+                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                        Text="{Binding ModelRecord.BirthDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                        <DatePicker.Resources>
+                            <Style TargetType="DatePickerTextBox">
+                                <Setter Property="IsReadOnly" Value="True" />
+                                <Setter Property="Text" Value=" " />
+                                <Setter Property="Focusable" Value="False" />
+                                <Setter Property="IsEnabled" Value="False" />
+                                <Setter Property="IsHitTestVisible" Value="False" />
+                            </Style>
+                        </DatePicker.Resources>
+                    </DatePicker>
+                    <TextBox
+                        Name="PhoneNumber"
+                        Margin="20"
+                        materialDesign:HintAssist.Foreground="RoyalBlue"
+                        materialDesign:HintAssist.Hint="PhoneNumber"
+                        materialDesign:TextFieldAssist.CharacterCounterVisibility="Collapsed"
+                        materialDesign:TextFieldAssist.UnderlineBrush="RoyalBlue"
+                        MaxLength="10"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        Text="{Binding ModelRecord.PhoneNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                    <TextBox
+                        Name="Address"
+                        Margin="20"
+                        materialDesign:HintAssist.Foreground="RoyalBlue"
+                        materialDesign:HintAssist.Hint="Address"
+                        materialDesign:TextFieldAssist.CharacterCounterVisibility="Collapsed"
+                        materialDesign:TextFieldAssist.UnderlineBrush="RoyalBlue"
+                        MaxLength="10"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        Text="{Binding ModelRecord.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                </StackPanel>
+            </Border>
+            <StackPanel
+                Margin="0,15"
+                HorizontalAlignment="Center"
+                Orientation="Horizontal">
+                <Button
+                    Width="120"
+                    Margin="15,0"
+                    Command="{Binding Addcommand}"
+                    Content="Submit">
+                    <Button.Style>
+                        <Style BasedOn="{StaticResource MaterialDesignRaisedDarkButton}" TargetType="{x:Type Button}">
+                            <Setter Property="IsEnabled" Value="false" />
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding ElementName=FirstName, Path=(Validation.HasError)}" Value="false" />
+                                        <Condition Binding="{Binding ElementName=LastName, Path=(Validation.HasError)}" Value="false" />
+                                        <Condition Binding="{Binding ElementName=BirthDate, Path=(Validation.HasError)}" Value="false" />
+                                        <Condition Binding="{Binding ElementName=PhoneNumber, Path=(Validation.HasError)}" Value="false" />
+                                        <Condition Binding="{Binding ElementName=Address, Path=(Validation.HasError)}" Value="false" />
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="IsEnabled" Value="true" />
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
